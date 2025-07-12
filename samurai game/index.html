@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The One-Inch Samurai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral&family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+<style>
+  body {
+    background: #1e1e1e;
+    font-family: 'Spectral', serif;
+    padding: 5vw;
+    max-width: 1000px;
+    margin: auto;
+    color: #f5f5f5;
+  }
+  h1 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 6vw;
+    text-align: center;
+    margin-bottom: 6vw;
+    color: #ffda6a;
+  }
+  #image-container {
+    text-align: center;
+    margin-bottom: 5vw;
+  }
+  #image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  }
+  #story {
+    white-space: pre-wrap;
+    font-size: 4.2vw;
+    line-height: 1.6;
+    min-height: 150px;
+    margin-bottom: 4vw;
+  }
+  @media (min-width: 600px) {
+    #story {
+      font-size: 1.2em;
+    }
+    h1 {
+      font-size: 2.4em;
+    }
+  }
+  .choices {
+    margin-top: 20px;
+  }
+  .choice-button {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 12px auto;
+    padding: 14px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    border: none;
+    border-radius: 10px;
+    color: #1e1e1e;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .choice-button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+</head>
+<body>
+  <h1>The One-Inch Samurai</h1>
+  <div id="image-container"></div>
+  <div id="story"></div>
+  <div class="choices" id="choices"></div>
+
+  <script>
+    const storyElement = document.getElementById('story');
+    const choicesElement = document.getElementById('choices');
+    const imageContainer = document.getElementById('image-container');
+
+    let currentScene = "intro";
+
+    const scenes = {
+      intro: {
+        text: "You are Issun-bōshi, a boy no taller than a thumb, born to a kind and humble couple. Though small, your heart is mighty. One day, you feel a stirring in your soul.\n\nDo you stay and become a farmer like your father, or venture into the world to become a samurai?",
+        image: "images/intro_pic.png",
+        choices: [
+          { text: "Train to become a samurai", next: "river" },
+          { text: "Stay home and become a farmer", next: "farmer_ending" }
+        ]
+      },
+      farmer_ending: {
+        text: "You chose a peaceful life. Seasons pass, crops grow, and you live quietly. But some part of you wonders what might have been...\n\nTHE END.",
+        image: "images/farmer.png",
+        choices: [
+          { text: "Try Again", next: "intro" }
+        ]
+      },
+      river: {
+        text: "Your parents prepare you for your journey. They give you a rice bowl boat and a chopstick to paddle. The river roars with storm clouds ahead.\n\nDo you face the storm or wait for it to pass?",
+        image: "images/river.png",
+        choices: [
+          { text: "Brave the storm", next: "capital_fast" },
+          { text: "Wait for the storm to pass", next: "capital_slow" }
+        ]
+      },
+      capital_fast: {
+        text: "You fight the storm, tossed and soaked. But your courage carries you to the capital quickly, and word of your bravery spreads.",
+        image: "images/storm.png",
+        choices: [
+          { text: "Continue", next: "palace" }
+        ]
+      },
+      capital_slow: {
+        text: "You find shelter under a leaf and wait. While waiting, you ponder about the importance of being strong and courageous, despite your size The journey takes longer, but you arrive safe and steady in the capital.",
+        image: "images/wait.png",
+        choices: [
+          { text: "Continue", next: "palace" }
+        ]
+      },
+      palace: {
+        text: "You enter service at the Chancellor’s palace. They ask what skills you wish to master.\n\nDo you study wisdom or train in swordsmanship?",
+        image: "images/palace.png",
+        choices: [
+          { text: "Study wisdom", next: "escort" },
+          { text: "Train as a samurai", next: "escort" }
+        ]
+      },
+      escort: {
+        text: "You train hard and become the escort of the Chancellor’s daughter—a graceful and intelligent young woman. One day, a giant oni appears, snarling and hungry!\n\nDo you run for help, or do you stand your ground and fight?",
+        image: "images/escort.png",
+        choices: [
+          { text: "Run and get the guards", next: "oni_loss" },
+          { text: "Fight the oni", next: "oni_win" }
+        ]
+      },
+      oni_loss: {
+        text: "You flee in fear. By the time help arrives, the princess is gone. The Chancellor banishes you.\n\nTHE END.",
+        image: "images/lose.png",
+        choices: [
+          { text: "Try Again", next: "intro" }
+        ]
+      },
+      oni_win: {
+        text: "You rush in. The oni laughs—and swallows you whole! Inside its belly, you stab with your needle sword. The oni howls and spits you out, fleeing into the mountains. It drops a shimmering magical mallet...",
+        image: "images/win.png",
+        choices: [
+          { text: "Take the mallet for yourself", next: "wish_self" },
+          { text: "Give the mallet to the princess", next: "wish_princess" }
+        ]
+      },
+      wish_self: {
+        text: "You wish to grow—and in a burst of magic, you do! Now full-sized, you are celebrated as a true hero and marry the Chancellor’s daughter.\n\nTHE END.",
+        image: "images/self_wish.png",
+        choices: [
+          { text: "Learn More", next: "learn" },
+          { text: "Try Again", next: "intro" }
+        ]
+      },
+      wish_princess: {
+        text: "You offer the mallet to the princess. Touched by your humility, she wishes for your growth—and in a flash, you stand tall. Your courage and kindness win her heart.\n\nTHE END.",
+        image: "images/princess_wish.png",
+        choices: [
+          { text: "Learn More", next: "learn" },
+          { text: "Try Again", next: "intro" }
+        ]
+      },
+      learn: {
+        text: "Issun-bōshi (The One-Inch Samurai) is a beloved Japanese fairytale about courage, humility, and perseverance. Though tiny, Issun-bōshi proves that greatness is measured by spirit, not size.\n\nThemes: \n- True strength comes from within.\n- Humility and bravery are more powerful than pride.\n- Even the smallest can change the world.\n\nThank you for playing!",
+        image: "images/married.png",
+        choices: [
+          { text: "Try Again", next: "intro" }
+        ]
+      }
+    };
+
+    function typeWriter(text, i = 0, callback) {
+      if (i < text.length) {
+        storyElement.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(text, i + 1, callback), 20);
+      } else if (callback) {
+        callback();
+      }
+    }
+
+    function showScene(sceneKey) {
+      currentScene = sceneKey;
+      const scene = scenes[sceneKey];
+      storyElement.textContent = "";
+      choicesElement.innerHTML = "";
+
+      // Show image
+      if (scene.image) {
+        imageContainer.innerHTML = `<img src="${scene.image}" alt="Scene image">`;
+      } else {
+        imageContainer.innerHTML = "";
+      }
+
+      typeWriter(scene.text, 0, () => {
+        scene.choices.forEach(choice => {
+          const btn = document.createElement("button");
+          btn.textContent = choice.text;
+          btn.className = "choice-button";
+          btn.onclick = () => showScene(choice.next);
+          choicesElement.appendChild(btn);
+          storyElement.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    }
+
+    showScene("intro");
+  </script>
+</body>
+</html>
